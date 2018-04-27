@@ -1,0 +1,5 @@
+db.sqlite3
+.DS_Store
+TAGS
+*.pyc
+__pycache__/
