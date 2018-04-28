@@ -1,22 +1,15 @@
-pipeline {
-    agent any
-    // git 'git@github.com:TheJefe/dadjokes.git'
+node {
+    git 'git@github.com:TheJefe/dadjokes.git'
 
-    stages {
-        stage('Test') {
-            steps {
-                sh '''#!/bin/bash -l
-                pip install -r requirements.txt
-                ./manage.py test
-                '''
-            }
+    stage('Test') {
+        def testImage = docker.build("thejefe/dadjokes", "-f Dockerfile.build .")
+        testImage.inside('-u root') {
+            sh 'pip install -r requirements.txt && ./manage.py test'
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                // docker build -t thejefe/dadjokes .
-                // docker push thejefe/dadjokes
-            }
-        }
+    }
+
+    stage('Deploy') {
+        def cleanImage = docker.build("thejefe/dadjokes")
+        cleanImage.push('latest')
     }
 }
