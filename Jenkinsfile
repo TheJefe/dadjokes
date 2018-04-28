@@ -8,8 +8,10 @@ node {
         }
     }
 
-    stage('Deploy') {
-        def cleanImage = docker.build("thejefe/dadjokes")
-        cleanImage.push('latest')
+    stage('Publish') {
+        withDockerRegistry([credentialsId: 'c106fdf4-34ae-47a7-80e5-ffaca4a6f25f']) {
+            def cleanImage = docker.build("thejefe/dadjokes")
+            cleanImage.push('latest')
+        }
     }
 }
