@@ -11,7 +11,10 @@ node {
     stage('Publish') {
         withDockerRegistry([credentialsId: 'c106fdf4-34ae-47a7-80e5-ffaca4a6f25f']) {
             def cleanImage = docker.build("thejefe/dadjokes")
-            cleanImage.push('latest')
+            if (BRANCH_NAME == 'master') {
+                cleanImage.push('latest')
+            }
+            cleanImage.push(BRANCH_NAME)
         }
     }
 }
