@@ -1,4 +1,6 @@
 node {
+    def cluster = 'dadjokes'
+    def service = 'dadjokes'
     git 'git@github.com:TheJefe/dadjokes.git'
 
     stage('Test') {
@@ -13,6 +15,9 @@ node {
             def cleanImage = docker.build("thejefe/dadjokes")
             if (BRANCH_NAME == 'master') {
                 cleanImage.push('latest')
+                @Library('jenkins-shared-library')
+                def ecs = new ecs()
+                ecs.deployService(cluster, service)
             }
             cleanImage.push(BRANCH_NAME)
         }
