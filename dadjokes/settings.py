@@ -30,7 +30,7 @@ allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS')
 if not allowed_hosts:
     allowed_hosts = ['127.0.0.1', 'localhost']
 else:
-    allowed_hosts = [allowed_hosts]
+    allowed_hosts = [host.strip() for host in allowed_hosts.split(',')]
 ALLOWED_HOSTS = allowed_hosts
 
 
