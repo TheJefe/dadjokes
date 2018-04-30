@@ -1,6 +1,7 @@
 node {
     def cluster = 'dadjokes'
     def service = 'dadjokes'
+    def region = 'us-east-1'
     git 'git@github.com:TheJefe/dadjokes.git'
 
     stage('Test') {
@@ -17,7 +18,7 @@ node {
                 cleanImage.push('latest')
                 @Library('jenkins-shared-library')
                 def ecs = new ecs()
-                ecs.deployService(cluster, service)
+                ecs.deployService(cluster, service, region)
             }
             cleanImage.push(BRANCH_NAME)
         }
