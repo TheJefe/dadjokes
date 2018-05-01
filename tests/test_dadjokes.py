@@ -13,10 +13,10 @@ class DadJokesTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_dadjokes_returns_text(self):
-        jokes = ["I'm hilarious"]
+        jokes = ["Im hilarious"]
         dadjokes.views.JOKES = jokes
 
         response = self.client.get('/')
 
-        self.assertEqual(response.content.decode(), jokes[0])
+        self.assertTrue(jokes[0] in response.content.decode('utf8'))
 
