@@ -16,11 +16,18 @@ node {
             def cleanImage = docker.build("thejefe/dadjokes")
             if (BRANCH_NAME == 'master') {
                 cleanImage.push('latest')
-                @Library('jenkins-shared-library')
-                def ecs = new ecs()
-                ecs.deployService(cluster, service, region)
             }
             cleanImage.push(BRANCH_NAME)
+        }
+    }
+
+    stage('Deploy') {
+        if (BRANCH_NAME == 'master') {
+            @Library('jenkins-shared-library')
+            def ecs = new ecs()
+            ecs.deployService(cluster, service, region)
+        } else {
+            echo 'No deployments for non-master branches'
         }
     }
 }
